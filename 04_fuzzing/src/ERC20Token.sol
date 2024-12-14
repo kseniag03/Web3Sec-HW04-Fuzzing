@@ -23,15 +23,13 @@ contract ERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit
         _unpause();
     }
 
-    function mint(address to, uint256 amount) public onlyOwner {
+    function mint(address to, uint256 amount) public virtual onlyOwner {
         _mint(to, amount);
     }
 
     // The following functions are overrides required by Solidity.
 
-    function _update(address from, address to, uint256 value)
-    internal
-    override(ERC20, ERC20Pausable)
+    function _update(address from, address to, uint256 value) internal virtual override(ERC20, ERC20Pausable)
     {
         super._update(from, to, value);
     }
