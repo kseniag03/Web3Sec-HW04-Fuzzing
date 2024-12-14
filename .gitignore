@@ -1,3 +1,8 @@
+# Compiler files
+04_fuzzing/cache/
+04_fuzzing/out/
+04_fuzzing/lib/
+
 # Dotenv file
 .env
 .DS_Store
