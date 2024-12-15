@@ -3,7 +3,7 @@
 ## Tools
 - Foundry
 - Echidna
-- Medusa
+- Medusa // не поддалось
 
 ## Install
 ```bash
@@ -19,7 +19,7 @@ forge build
 echidna test/ERC20Internal.sol --contract ERC20Internal --config test/echidna.yaml
 echidna test/ERC20External.sol --contract ERC20External --config test/echidna-ext.yaml
 
-medusa fuzz --target-contracts test/ERC20External.sol --config test/medusa.yaml // ???
+medusa fuzz --target-contracts test/ERC20External.sol --config test/medusa.yaml // анлаки, не работает
 ```
 
 ## Report
@@ -56,7 +56,7 @@ medusa fuzz --target-contracts test/ERC20External.sol --config test/medusa.yaml 
 4. test_ERC20(external)_mintTokens(address,uint256):
     1. Mint failed to update target balance
     2. при обновлении баланса происходит его обнуление (вот прикольный прикол, однако), поэтому результат mint некорректный
-    3. 
+    3. изменение закомментировано, чтобы при запуске фаззинга оно не перекрывало остальные фейлы (6 для internal и 5 для external)
 ```sol
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Token) {
         super._update(from, to, 0 * value);

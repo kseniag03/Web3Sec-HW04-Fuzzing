@@ -42,6 +42,7 @@ contract ERC20Internal is ERC20Token, CryticERC20BasicProperties, CryticERC20Bur
     }
 
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Token) {
-        super._update(from, to, 0 * value);
+        // super._update(from, to, 0 * value);
+        super._update(from, to, value);
     }
 }

@@ -49,6 +49,7 @@ contract ERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit
     }
 
     function _update(address from, address to, uint256 value) internal virtual override(ERC20, ERC20Pausable) {
-        super._update(from, to, 0 * value);
+        // super._update(from, to, 0 * value);
+        super._update(from, to, value);
     }
 }
