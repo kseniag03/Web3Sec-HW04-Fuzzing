@@ -27,10 +27,11 @@ contract ERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit
         _mint(to, amount);
     }
 
-    // The following functions are overrides required by Solidity.
+    function totalSupply() public pure virtual override(ERC20) returns (uint256) {
+        return 10;
+    }
 
-    function _update(address from, address to, uint256 value) internal virtual override(ERC20, ERC20Pausable)
-    {
+    function _update(address from, address to, uint256 value) internal virtual override(ERC20, ERC20Pausable) {
         super._update(from, to, value);
     }
 }

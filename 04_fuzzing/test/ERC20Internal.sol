@@ -20,6 +20,10 @@ contract ERC20Internal is ERC20Token, CryticERC20BasicProperties, CryticERC20Bur
         ERC20Token.mint(to, amount);
     }
 
+    function totalSupply() public pure override(ERC20, ERC20Token) returns (uint256) {
+        return 10;
+    }
+
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Token) {
         super._update(from, to, value);
     }

@@ -2,6 +2,7 @@
 04_fuzzing/cache/
 04_fuzzing/out/
 04_fuzzing/lib/
+04_fuzzing/echidna-corpus/
 
 # Dotenv file
 .env
